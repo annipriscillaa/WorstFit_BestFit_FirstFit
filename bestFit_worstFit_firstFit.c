@@ -1,34 +1,5 @@
 #include<stdio.h> 
  
-void firstfit(int n_m,int n_p, int memory[],int process[]) 
-{ 
-	int memory_left[20]; 
-	int i;
-	for(i=0;i<n_m;i++) 
-	{ 
-		memory_left[i]=memory[i]; 
- 	} 
-	for(i=0;i<n_p;i++) 
-	{ 
-		int j, flag=0; 
-		for(j=0;j<n_m;j++) 
-		{ 
-			if(memory_left[j]>=process[i]) 
-			{ 
-				printf("%dKB process assigned to memory %dKB\n",process[i],memory_left[j]); 
-				memory_left[j]-=process[i]; 
-				printf("Size of Hole after assigning the process:%dKB\n",memory_left[j]); 					
-				flag=1; 
-				break; 
-			} 
-		} 
-		if(flag==0) 
-		{
-			printf("\n%dKB should wait\n",process[i]); 
-		} 
-	}
-} 
- 
 void worstfit(int b, int p, int blocks[],int process[]) 
 { 
 	int max_sort(int blocks[], int b) 
@@ -81,6 +52,43 @@ void worstfit(int b, int p, int blocks[],int process[])
 		} 
 	} 
 } 
+
+
+void firstfit(int b, int p, int blocks[],int process[]) 
+{ 
+	int flag,i,j,temp_blocks[30]; 
+	for(i=0;i<b;i++) 
+	{ 
+		temp_blocks[i]=blocks[i]; 
+	} 
+	printf("\nFirst Fit:\n"); 
+	for(i=0;i<p;i++) 
+	{ 
+		flag=-1; 
+		for(j=0;j<b;j++) 
+		{ 
+			if(temp_blocks[j]>=process[i]) 
+			{ 
+				if(flag==-1)
+				{ 
+					flag=j; 
+				} 
+			} 
+		} 
+		if (flag!= -1) 
+		{ 
+			printf("\nThe process of size %dKB has been assigned to block %dKB\n",process[i], temp_blocks[flag] ); 
+			temp_blocks[flag] -= process[i]; 
+			printf("Size Of hole after assigning the process: %dKB\n",temp_blocks[flag]); 
+ 
+		} 
+		else
+		{ 
+			printf("\nThe process of size %dKB is in wait state\n",process[i]); 
+		} 
+	} 
+} 
+
 
 void bestfit(int b, int p, int blocks[],int process[]) 
 { 
